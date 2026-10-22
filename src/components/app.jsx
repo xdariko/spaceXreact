@@ -6,17 +6,20 @@ import { SpaceX } from "../api/spacex";
 function App() {
 
     const [launches, setLaunches] = useState([]);
-    const spacex = new SpaceX();
+    const [launchpads, setLaunchpads] = useState([]);
+    const [activePad, setActivePad] = useState(null);
     useEffect(() => {
-        spacex.launches().then(data => {
-            setLaunches(data)
+        const spacex = new SpaceX();
+        Promise.all([spacex.launches(), spacex.launchpads()]).then(([launches, launchpads]) => {
+            setLaunches(launches);
+            setLaunchpads(launchpads);
         })
     }, [])
 
     return (
         <main className='main'>
-            <LaunchList launches={launches} />
-            <Map />
+            <LaunchList launches={launches} onHover={setActivePad} />
+            <Map launchpads={launchpads} activePad={activePad} />
         </main>
     )
 }

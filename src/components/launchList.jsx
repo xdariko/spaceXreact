@@ -8,7 +8,11 @@ function LaunchList(props) {
 
                 <ul>
                     {props.launches.map(launch => {
-                        return <li key={launch.id}>{launch.name}</li>
+                        return <li key={launch.id}
+                                   onMouseEnter={() => props.onHover(launch.pad.id)}
+                                   onMouseLeave={() => props.onHover(null)}>
+                            {launch.name}
+                        </li>
                     })}
                 </ul>
             </div>
